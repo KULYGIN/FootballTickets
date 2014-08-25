@@ -1,7 +1,10 @@
+import DataLayer.DBProcessor;
+import PresentationLayer.LoginWindow;
+
 public class FootballTickets {
     public static void main (String args[]) {
 
         DBProcessor.connect();
-        System.out.println(DBProcessor.addNewUser("log2", "pas"));
+        LoginWindow.initFrame();
     }
 }
