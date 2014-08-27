@@ -44,7 +44,7 @@ public class User {
     }
 
     public void saveBuyTicket (Tickets ticket, int status) {
-      DBProcessor.saveBuyTicket (this, ticket, status);
+      DBProcessor.saveBuyTicket(this, ticket, status);
     }
 
     public ArrayList<Tickets> getUserTickets () {
@@ -57,5 +57,9 @@ public class User {
 
     public void returnTicket(Tickets ticket) {
         DBProcessor.returnTicket(ticket);
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
     }
 }

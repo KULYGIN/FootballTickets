@@ -19,6 +19,9 @@ public class MainWindow implements ActionListener {
     private JFrame mainFrame;
     private JMenuItem exitAction = new JMenuItem("Выход");
     private JMenuItem ticketsAction = new JMenuItem("Мои билеты");
+    private JMenuItem stadiumMenu = new JMenuItem("Стадионы");
+    private JMenuItem matchMenu = new JMenuItem("Матчи");
+    private JMenuItem ticketMenu = new JMenuItem("Билеты");
     private JList matchList = new JList();
     private JButton showTicketsButton = new JButton("Показать доступные билеты");
     private ArrayList<Match> matches;
@@ -44,10 +47,23 @@ public class MainWindow implements ActionListener {
         JMenu accountMenu = new JMenu("Аккаунт");
         menuBar.add(accountMenu);
 
+        JMenu adminMenu = new JMenu("Меню администратора");
+        menuBar.add(adminMenu);
+        adminMenu.add(stadiumMenu);
+        adminMenu.add(matchMenu);
+        adminMenu.add(ticketMenu);
+
+        if (!user.isAdmin()) {
+             adminMenu.setVisible(false);
+        }
+
         accountMenu.add(exitAction);
         exitAction.addActionListener(this);
         accountMenu.add(ticketsAction);
         ticketsAction.addActionListener(this);
+        stadiumMenu.addActionListener(this);
+        matchMenu.addActionListener(this);
+        ticketMenu.addActionListener(this);
 
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
@@ -180,6 +196,21 @@ public class MainWindow implements ActionListener {
         if (source == ticketsAction) {
             clearFrame();
             new MyTicketsFrame(mainFrame, user, this);
+        }
+
+        if (source == stadiumMenu) {
+            clearFrame();
+            new StdiumMenuFrame(mainFrame, this);
+        }
+
+        if (source == matchMenu) {
+            clearFrame();
+            new MatchMenuFrame(mainFrame, this);
+        }
+
+        if (source == ticketMenu) {
+            clearFrame();
+            new TicketMenuFrame(mainFrame, this);
         }
     }
 

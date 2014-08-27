@@ -1,5 +1,7 @@
 package BLogic;
 
+import DataLayer.DBProcessor;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -54,5 +56,33 @@ public class Match {
 
     public ArrayList<Tickets> getTickets() {
         return tickets;
+    }
+
+    public String getMatchName() {
+        return matchName;
+    }
+
+    public String getCommand1() {
+        return command1;
+    }
+
+    public String getCommand2() {
+        return command2;
+    }
+
+    public Timestamp getDateTime() {
+        return dateTime;
+    }
+
+    public boolean updateMatch () {
+        return DBProcessor.editMatch(this, false);
+    }
+
+    public void deleteMatch() {
+        DBProcessor.deleteMatch(this);
+    }
+
+    public boolean addNewTicket (Place place, int cost) {
+        return DBProcessor.addNewTicket(this, place, cost);
     }
 }

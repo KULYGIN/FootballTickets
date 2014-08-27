@@ -1,5 +1,7 @@
 package BLogic;
 
+import DataLayer.DBProcessor;
+
 import java.util.ArrayList;
 
 public class Stadium {
@@ -18,6 +20,12 @@ public class Stadium {
 
     public Stadium(String stadiumName) {
         this.stadiumName = stadiumName;
+    }
+
+    public Stadium(String stadiumName, String aboutStadium, String picName) {
+        this.stadiumName = stadiumName;
+        this.aboutStadium = aboutStadium;
+        this.picName = picName;
     }
 
     public String getStadiumName() {
@@ -39,4 +47,24 @@ public class Stadium {
     public ArrayList<Place> getPlaces() {
         return places;
     }
+
+    public void fillPlaces () {
+        DBProcessor.getStadiumPlaces(this);
+    }
+
+    public String getAboutStadium() {
+        return aboutStadium;
+    }
+
+    public void deleteStadium(){
+        DBProcessor.deleteStadium(this);
+    }
+
+    public boolean editStadium () {
+        return DBProcessor.editStadium(this, false);
+    }
+
+
+
+
 }
