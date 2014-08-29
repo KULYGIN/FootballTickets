@@ -1,7 +1,8 @@
-package PresentationLayer;
+package PresentationLayer.Window;
 
 import BLogic.Match;
 import BLogic.User;
+import PresentationLayer.Frame.*;
 import ServiceLayer.MatchTimeProcessor;
 import ServiceLayer.ModalDialog;
 import com.toedter.calendar.JCalendar;
@@ -200,7 +201,7 @@ public class MainWindow implements ActionListener {
 
         if (source == stadiumMenu) {
             clearFrame();
-            new StdiumMenuFrame(mainFrame, this);
+            new StadiumMenuFrame(mainFrame, this);
         }
 
         if (source == matchMenu) {

@@ -159,9 +159,15 @@ public class DBProcessor {
 
     public static Match getStadiumPlace(Match match) {
         ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+        int stadiumId = 0;
+        String match_name = "";
+        String command1 = "";
+        String command2 = "";
+        Timestamp datetime = null;
         try {
             PreparedStatement pr = connection.prepareStatement("SELECT place.place_id, place.sector, place.place_num,\n" +
-                    "tickets.cost, tickets.ticket_id, tickets.status\n" +
+                    "tickets.cost, tickets.ticket_id, tickets.status, match.stadium_id, match.match_name,\n" +
+                    "match.command1, match.command2, match.datetime\n" +
                     "FROM match_tickets\n" +
                     "JOIN match ON (match.match_id = match_tickets.match_id)\n" +
                     "JOIN tickets ON (tickets.ticket_id = match_tickets.ticket_id)\n" +
@@ -178,6 +184,11 @@ public class DBProcessor {
                 int status = rs.getInt(6);
                 Place place = new Place(place_id, sector, place_num);
                 Tickets ticket = new Tickets(place, cost, status, match, ticket_id);
+                stadiumId = rs.getInt(7);
+                match_name = rs.getString(8);
+                command1 = rs.getString(9);
+                command2 = rs.getString(10);
+                datetime = rs.getTimestamp(11);
                 tickets.add(ticket);
             }
             rs.close();
@@ -186,6 +197,12 @@ public class DBProcessor {
             e.printStackTrace();
         }
         match.setTickets(tickets);
+        Stadium stadium = new Stadium(stadiumId);
+        match.setStadium(stadium);
+        match.setCommand1(command1);
+        match.setCommand2(command2);
+        match.setDateTime(datetime);
+        match.setMatchName(match_name);
         return match;
     }
 

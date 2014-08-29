@@ -47,6 +47,13 @@ public class Tickets {
                 " Стоимость: " + ticketCost + " " + ticketStatus);
     }
 
+    public String getFormatedTicketString () {
+        return new String(place.getPlaceString() +
+                " Стоимость: " + ticketCost);
+    }
+
+
+
     public int getStatus() {
         return status;
     }

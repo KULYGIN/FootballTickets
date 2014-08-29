@@ -1,4 +1,4 @@
-package PresentationLayer;
+package PresentationLayer.Window;
 
 import BLogic.User;
 import ServiceLayer.ModalDialog;

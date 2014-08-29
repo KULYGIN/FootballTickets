@@ -1,10 +1,8 @@
-package PresentationLayer;
+package PresentationLayer.Frame;
 
-import BLogic.Match;
 import BLogic.Tickets;
 import BLogic.User;
-import DataLayer.DBProcessor;
-import DataLayer.ImageProcessor;
+import PresentationLayer.Window.MainWindow;
 import ServiceLayer.ModalDialog;
 
 import javax.swing.*;
@@ -14,18 +12,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class MatchTicketsFrame implements ActionListener {
+public class MyTicketsFrame implements ActionListener {
     private JList placeList = new JList();
-    private JButton saveButton = new JButton("Забронировать");
-    private Match match;
-    private Tickets currentTicket = null;
+    private int currentIndex = -1;
     private User user;
     private JFrame frame;
     private MainWindow mainWindow;
     private JButton backButton = new JButton("Назад");
-    public MatchTicketsFrame(JFrame frame, User user, Match match, MainWindow mainWindow) {
+    private JButton buyButton = new JButton("Купить");
+    private JButton cancelButton = new JButton("Отменить бронирование");
+    private ArrayList<Tickets> tickets;
+
+    public MyTicketsFrame(JFrame frame, User user, MainWindow mainWindow) {
         this.frame = frame;
-        this.match = match;
         this.user = user;
         this.mainWindow = mainWindow;
 
@@ -42,68 +41,71 @@ public class MatchTicketsFrame implements ActionListener {
         JPanel upPanel = new JPanel();
         upPanel.setLayout(new FlowLayout());
 
-        JLabel titleLable = new JLabel("Билеты на матч " + match.getMatchString());
+        JLabel titleLable = new JLabel("Ваши билеты");
         titleLable.setHorizontalAlignment(SwingConstants.CENTER);
 
         upPanel.add(titleLable);
         upPanel.add(backButton);
 
-        ImageIcon imageIcon = ImageProcessor.getImageIcon(match.getPicName(), 500, 400);
-        JLabel imageLable = new JLabel(imageIcon);
-
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BorderLayout());
-
-        middlePanel.add(imageLable, BorderLayout.WEST);
-        JPanel chosePanel = new JPanel();
-        chosePanel.setLayout(new BorderLayout());
-
-        chosePanel.add(new JLabel("Выбрать место"), BorderLayout.NORTH);
-        chosePanel.add(scrollPane, BorderLayout.CENTER );
-        chosePanel.add(saveButton, BorderLayout.SOUTH);
-
-        middlePanel.add(chosePanel, BorderLayout.CENTER);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(buyButton);
+        buttonPanel.add(cancelButton);
 
         mainPanel.add(upPanel, BorderLayout.NORTH);
-        mainPanel.add(middlePanel, BorderLayout.CENTER);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         frame.add(mainPanel);
-        fillPlace ();
+        fillTickets();
+        switchEnable(false);
         frame.revalidate();
-        saveButton.addActionListener(this);
         backButton.addActionListener(this);
+        buyButton.addActionListener(this);
+        cancelButton.addActionListener(this);
     }
 
-    public void fillPlace () {
-        match = DBProcessor.getStadiumPlace(match);
-        ArrayList <Tickets> tickets = match.getTickets();
-        if (!tickets.isEmpty()) {
-            DefaultListModel listModel = new DefaultListModel();
-            for (Tickets ticket : tickets) {
+    public void fillTickets() {
+        currentIndex = -1;
+        tickets = user.getUserTickets();
+        DefaultListModel listModel = new DefaultListModel();
+        String color = "<html><p style='color:green;'>";
+        for (Tickets ticket : tickets) {
+            if (ticket.getStatus() == 1) {
+                listModel.addElement(color + ticket.getTicketString());
+            }  else {
                 listModel.addElement(ticket.getTicketString());
             }
-            placeList.setModel(listModel);
         }
+        placeList.setModel(listModel);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
        Object source = e.getSource();
-        if (source == saveButton) {
-            if (currentTicket == null) {
-                ModalDialog.showEror(frame, "Не выбрано место");
-                return;
-            }
-           new SaveBuyWindow(user, mainWindow, currentTicket );
-            frame.setVisible(false);
-        }
         if (source == backButton) {
             mainWindow.intiMainFrame();
             frame.setVisible(true);
         }
+        if (source == buyButton) {
+            user.buyTicket(tickets.get(currentIndex));
+            ModalDialog.showComplete(frame, "Билет куплен");
+            fillTickets();
+        }
+        if (source == cancelButton) {
+            user.returnTicket(tickets.get(currentIndex));
+            ModalDialog.showComplete(frame, "Бронь снята");
+            fillTickets();
+        }
+    }
+
+    public void switchEnable (boolean type) {
+        buyButton.setEnabled(type);
+        cancelButton.setEnabled(type);
+        frame.revalidate();
     }
 
     private class SharedListSelectionHandler implements javax.swing.event.ListSelectionListener {
@@ -113,7 +115,12 @@ public class MatchTicketsFrame implements ActionListener {
             if (lsm == placeList) {
                 int selectedIndex = lsm.getSelectedIndex();
                 if (selectedIndex >= 0) {
-                    currentTicket = match.getTickets().get(selectedIndex);
+                    currentIndex = selectedIndex;
+                    if (tickets.get(currentIndex).getStatus() == 1) {
+                        switchEnable(true);
+                    } else {
+                        switchEnable(false);
+                    }
                 }
             }
         }

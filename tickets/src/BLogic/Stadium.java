@@ -28,6 +28,10 @@ public class Stadium {
         this.picName = picName;
     }
 
+    public Stadium(int stadiumID) {
+        this.stadiumID = stadiumID;
+    }
+
     public String getStadiumName() {
         return stadiumName;
     }

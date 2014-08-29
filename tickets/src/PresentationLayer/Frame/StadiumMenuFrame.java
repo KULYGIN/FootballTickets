@@ -1,8 +1,9 @@
-package PresentationLayer;
+package PresentationLayer.Frame;
 
 import BLogic.Place;
 import BLogic.Stadium;
 import DataLayer.DBProcessor;
+import PresentationLayer.Window.MainWindow;
 import ServiceLayer.ModalDialog;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class StdiumMenuFrame implements ActionListener {
+public class StadiumMenuFrame implements ActionListener {
     private JList placeList = new JList();
     private int currentStadiumIndex = -1;
     private int currentPlaceIndex = -1;
@@ -33,7 +34,7 @@ public class StdiumMenuFrame implements ActionListener {
     private JTextField picNameField = new JTextField("Имя изображения");
     private ArrayList<Stadium> stadiums;
     private ArrayList<Place> places;
-    public StdiumMenuFrame(JFrame frame, MainWindow mainWindow) {
+    public StadiumMenuFrame(JFrame frame, MainWindow mainWindow) {
         this.frame = frame;
         this.mainWindow = mainWindow;
 

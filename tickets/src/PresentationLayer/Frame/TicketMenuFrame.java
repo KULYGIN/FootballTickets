@@ -1,10 +1,11 @@
-package PresentationLayer;
+package PresentationLayer.Frame;
 
 import BLogic.Match;
 import BLogic.Place;
 import BLogic.Stadium;
 import BLogic.Tickets;
 import DataLayer.DBProcessor;
+import PresentationLayer.Window.MainWindow;
 import ServiceLayer.ModalDialog;
 
 import javax.swing.*;

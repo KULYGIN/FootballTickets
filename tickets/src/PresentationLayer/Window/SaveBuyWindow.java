@@ -1,4 +1,4 @@
-package PresentationLayer;
+package PresentationLayer.Window;
 
 import BLogic.Tickets;
 import BLogic.User;

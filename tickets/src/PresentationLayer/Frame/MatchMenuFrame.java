@@ -1,8 +1,9 @@
-package PresentationLayer;
+package PresentationLayer.Frame;
 
 import BLogic.Match;
 import BLogic.Stadium;
 import DataLayer.DBProcessor;
+import PresentationLayer.Window.MainWindow;
 import ServiceLayer.ModalDialog;
 import com.toedter.calendar.JCalendar;
 

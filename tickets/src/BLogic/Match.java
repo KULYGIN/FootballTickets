@@ -33,6 +33,10 @@ public class Match {
         this.stadium = stadium;
     }
 
+    public Match(int matchID) {
+        this.matchID = matchID;
+    }
+
     public String getMatchString () {
         String line =  new String(matchName + ". " + command1 + "/" + command2 +". " + stadium.getStadiumName() + ". " + dateTime);
         return line.substring(0,line.length() - 4); //Что бы избавиться от наносекунд
@@ -84,5 +88,25 @@ public class Match {
 
     public boolean addNewTicket (Place place, int cost) {
         return DBProcessor.addNewTicket(this, place, cost);
+    }
+
+    public void setStadium(Stadium stadium) {
+        this.stadium = stadium;
+    }
+
+    public void setMatchName(String matchName) {
+        this.matchName = matchName;
+    }
+
+    public void setCommand1(String command1) {
+        this.command1 = command1;
+    }
+
+    public void setCommand2(String command2) {
+        this.command2 = command2;
+    }
+
+    public void setDateTime(Timestamp dateTime) {
+        this.dateTime = dateTime;
     }
 }
