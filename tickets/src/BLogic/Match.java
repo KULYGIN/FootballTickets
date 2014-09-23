@@ -39,7 +39,7 @@ public class Match {
 
     public String getMatchString () {
         String line =  new String(matchName + ". " + command1 + "/" + command2 +". " + stadium.getStadiumName() + ". " + dateTime);
-        return line.substring(0,line.length() - 4); //Что бы избавиться от наносекунд
+        return line.substring(0, line.length() - 5); //Что бы избавиться от наносекунд
     }
 
     public int getMatchID() {
